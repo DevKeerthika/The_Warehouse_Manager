@@ -10,4 +10,6 @@ import com.jsp.whm.enums.AdminType;
 public interface AdminRepository extends JpaRepository<Admin, Integer>
 {
 	public boolean existsByAdminType(AdminType adminType);
+
+	public Optional<Admin> findByEmail(String username);
 }
