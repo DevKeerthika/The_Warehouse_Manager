@@ -23,6 +23,7 @@ public class WareHouse
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int wareHouseId;
 	private String name;
+	private int totalCapacity;
 	
 	@OneToOne
 	private Admin admin;
