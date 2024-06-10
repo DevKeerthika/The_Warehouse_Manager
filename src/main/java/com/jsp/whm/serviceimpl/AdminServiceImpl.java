@@ -20,6 +20,8 @@ import com.jsp.whm.responsedto.AdminResponse;
 import com.jsp.whm.service.AdminService;
 import com.jsp.whm.utility.ResponseStructure;
 
+import jakarta.validation.Valid;
+
 @Service
 public class AdminServiceImpl implements AdminService
 {
@@ -50,6 +52,13 @@ public class AdminServiceImpl implements AdminService
 
 
 
+	}
+
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> createAdmin(@Valid AdminRequest adminRequest) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
