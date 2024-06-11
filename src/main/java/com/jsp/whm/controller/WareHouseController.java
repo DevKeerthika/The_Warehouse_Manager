@@ -17,6 +17,8 @@ import com.jsp.whm.responsedto.WareHouseResponse;
 import com.jsp.whm.service.WareHouseService;
 import com.jsp.whm.utility.ResponseStructure;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1")
 public class WareHouseController 
@@ -26,14 +28,14 @@ public class WareHouseController
 	
 	@PreAuthorize("hasAuthority('CREATE_WAREHOUSE')")
 	@PostMapping("/warehouses")
-	public ResponseEntity<ResponseStructure<WareHouseResponse>> createWareHouse(@RequestBody WareHouseRequest wareHouseRequest)
+	public ResponseEntity<ResponseStructure<WareHouseResponse>> createWareHouse(@RequestBody @Valid WareHouseRequest wareHouseRequest)
 	{
 		return wareHouseService.createWareHouse(wareHouseRequest);
 	}
 	
 	@PreAuthorize("hasAuthority('UPDATE_WAREHOUSE')")
 	@PutMapping("/warehouses/{wareHouseId}")
-	public ResponseEntity<ResponseStructure<WareHouseResponse>> updateWarehouse(@RequestBody WareHouseRequest wareHouseRequest, @PathVariable int wareHouseId)
+	public ResponseEntity<ResponseStructure<WareHouseResponse>> updateWarehouse(@RequestBody @Valid WareHouseRequest wareHouseRequest, @PathVariable int wareHouseId)
 	{
 		return wareHouseService.updateWarehouse(wareHouseRequest, wareHouseId);
 	}
