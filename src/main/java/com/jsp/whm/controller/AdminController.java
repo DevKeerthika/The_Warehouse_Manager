@@ -39,7 +39,7 @@ public class AdminController
 	}
 	
 	@PutMapping("/admins")
-	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(@RequestBody AdminRequest adminRequest)
+	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(@RequestBody @Valid AdminRequest adminRequest)
 	{
 		return adminService.updateAdmin(adminRequest);
 	}
