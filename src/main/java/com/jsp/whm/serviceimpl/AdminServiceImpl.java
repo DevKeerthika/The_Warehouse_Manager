@@ -11,6 +11,7 @@ import com.jsp.whm.entity.Admin;
 import com.jsp.whm.entity.WareHouse;
 import com.jsp.whm.enums.AdminType;
 import com.jsp.whm.exception.AdminNotFoundByEmailException;
+import com.jsp.whm.exception.AdminNotFoundByIdException;
 import com.jsp.whm.exception.SuperAdminAlreadyExistException;
 import com.jsp.whm.exception.WarehouseNotFoundByIdException;
 import com.jsp.whm.mapper.AdminMapper;
@@ -98,6 +99,24 @@ public class AdminServiceImpl implements AdminService
 			
 			
 		}).orElseThrow(() -> new AdminNotFoundByEmailException("Admin not found for the requested email"));
+	}
+
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdminBySuperAdmin(AdminRequest adminRequest,
+			int adminId) 
+	{
+		return adminRepository.findById(adminId).map(admin -> {
+			admin = adminMapper.mapToAdmin(adminRequest, admin);
+			admin = adminRepository.save(admin);
+			
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(new ResponseStructure<AdminResponse>()
+							.setStatus(HttpStatus.OK.value())
+							.setMessage("Admin updated by SuperAdmin")
+							.setData(adminMapper.mapToAdminResponse(admin)));
+		}).orElseThrow(() -> new AdminNotFoundByIdException("Admin is not found for requested adminId"));
 	}
 
 

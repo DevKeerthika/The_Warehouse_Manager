@@ -15,7 +15,14 @@ import com.jsp.whm.repository.WareHouseRepository;
 import com.jsp.whm.requestdto.WareHouseRequest;
 import com.jsp.whm.responsedto.WareHouseResponse;
 import com.jsp.whm.service.WareHouseService;
+import com.jsp.whm.utility.ErrorStructure;
 import com.jsp.whm.utility.ResponseStructure;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -26,14 +33,32 @@ public class WareHouseController
 	
 	@PreAuthorize("hasAuthority('CREATE_WAREHOUSE')")
 	@PostMapping("/warehouses")
-	public ResponseEntity<ResponseStructure<WareHouseResponse>> createWareHouse(@RequestBody WareHouseRequest wareHouseRequest)
+	@Operation(description = "The endpoint is used to create the "
+			+ "Warehouse in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Warehouse created"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+
+	public ResponseEntity<ResponseStructure<WareHouseResponse>> createWareHouse(@RequestBody @Valid WareHouseRequest wareHouseRequest)
 	{
 		return wareHouseService.createWareHouse(wareHouseRequest);
 	}
 	
 	@PreAuthorize("hasAuthority('UPDATE_WAREHOUSE')")
 	@PutMapping("/warehouses/{wareHouseId}")
-	public ResponseEntity<ResponseStructure<WareHouseResponse>> updateWarehouse(@RequestBody WareHouseRequest wareHouseRequest, @PathVariable int wareHouseId)
+	@Operation(description = "The endpoint is used to update the "
+			+ "Warehouse in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Warehouse updated"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+
+	public ResponseEntity<ResponseStructure<WareHouseResponse>> updateWarehouse(@RequestBody @Valid WareHouseRequest wareHouseRequest, @PathVariable int wareHouseId)
 	{
 		return wareHouseService.updateWarehouse(wareHouseRequest, wareHouseId);
 	}
