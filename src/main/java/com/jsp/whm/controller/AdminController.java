@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -106,5 +107,20 @@ public class AdminController
 	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(@PathVariable int adminId)
 	{
 		return adminService.findAdmin(adminId);
+	}
+	
+	@GetMapping("/admins")
+	@Operation(description = "The endpoint is used to find all "
+			+ "Admins in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Admins found"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+
+	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAdmins()
+	{
+		return adminService.findAdmins();
 	}
 }

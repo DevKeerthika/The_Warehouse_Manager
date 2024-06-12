@@ -1,5 +1,7 @@
 package com.jsp.whm.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.jsp.whm.requestdto.AdminRequest;
@@ -19,5 +21,7 @@ public interface AdminService
 			int adminId);
 
 	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(int adminId);
+
+	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAdmins();
 
 }
