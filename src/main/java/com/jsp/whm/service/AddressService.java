@@ -13,4 +13,6 @@ public interface AddressService {
 	ResponseEntity<ResponseStructure<AddressResponse>> createAddress(@Valid AddressRequest addressRequest,
 			int wareHouseId);
 
+	ResponseEntity<ResponseStructure<AddressResponse>> updateAddress(AddressRequest addressRequest, int addressId);
+
 }
