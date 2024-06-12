@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.jsp.whm.entity.Address;
 import com.jsp.whm.entity.WareHouse;
+import com.jsp.whm.exception.AddressNotFoundByIdException;
 import com.jsp.whm.exception.WarehouseNotFoundByIdException;
 import com.jsp.whm.mapper.AddressMapper;
 import com.jsp.whm.repository.AddressRepository;
@@ -51,5 +52,24 @@ public class AddressServiceImpl implements AddressService
 						.setMessage("Address created")
 						.setData(addressMapper.mapToAddressResponse(address)));
 	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<AddressResponse>> updateAddress(AddressRequest addressRequest,
+			int addressId)
+	{
+		return addressRepository.findById(addressId).map(address -> {
+			address = addressMapper.mapToAddress(addressRequest, address);
+			address = addressRepository.save(address);
+			
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(new ResponseStructure<AddressResponse>()
+							.setStatus(HttpStatus.OK.value())
+							.setMessage("Address updated")
+							.setData(addressMapper.mapToAddressResponse(address)));
+		}).orElseThrow(() -> new AddressNotFoundByIdException("Failed to update address for given id"));
+	}
+
+	
 
 }
