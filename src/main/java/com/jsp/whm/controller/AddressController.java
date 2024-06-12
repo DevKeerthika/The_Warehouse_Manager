@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jsp.whm.repository.WareHouseRepository;
-import com.jsp.whm.requestdto.WareHouseRequest;
-import com.jsp.whm.responsedto.WareHouseResponse;
-import com.jsp.whm.service.WareHouseService;
+import com.jsp.whm.requestdto.AddressRequest;
+import com.jsp.whm.responsedto.AddressResponse;
+import com.jsp.whm.service.AddressService;
 import com.jsp.whm.utility.ErrorStructure;
 import com.jsp.whm.utility.ResponseStructure;
 
@@ -26,55 +25,53 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
-public class WareHouseController 
+public class AddressController 
 {
 	@Autowired
-	private WareHouseService wareHouseService;
+	private AddressService addressService;
 	
-	@PreAuthorize("hasAuthority('CREATE_WAREHOUSE')")
-	@PostMapping("/warehouses")
+	@PreAuthorize("hasAuthority('CREATE_ADDRESS')")
+	@PostMapping("/warehouses/{wareHouseId}/addresses")
 	@Operation(description = "The endpoint is used to create the "
-			+ "Warehouse in the database ", responses = {
-					@ApiResponse(responseCode = "201", description = "Warehouse created"),
+			+ "Address in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Address created"),
 					@ApiResponse(responseCode = "400", description = "Invalid input", 
 					content = {
 							@Content(schema = @Schema(oneOf = ErrorStructure.class))
 					})
 			})
-
-	public ResponseEntity<ResponseStructure<WareHouseResponse>> createWareHouse(@RequestBody @Valid WareHouseRequest wareHouseRequest)
+	public ResponseEntity<ResponseStructure<AddressResponse>> createAddress(@RequestBody @Valid AddressRequest addressRequest, @PathVariable int wareHouseId)
 	{
-		return wareHouseService.createWareHouse(wareHouseRequest);
+		return addressService.createAddress(addressRequest, wareHouseId);
 	}
 	
-	@PreAuthorize("hasAuthority('UPDATE_WAREHOUSE')")
-	@PutMapping("/warehouses/{wareHouseId}")
+	
+	@PreAuthorize("hasAuthority('UPDATE_ADDRESS')")
+	@PutMapping("/addresses/{addressId}")
 	@Operation(description = "The endpoint is used to update the "
-			+ "Warehouse in the database ", responses = {
-					@ApiResponse(responseCode = "201", description = "Warehouse updated"),
+			+ "Address in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Address updated"),
 					@ApiResponse(responseCode = "400", description = "Invalid input", 
 					content = {
 							@Content(schema = @Schema(oneOf = ErrorStructure.class))
 					})
 			})
-
-	public ResponseEntity<ResponseStructure<WareHouseResponse>> updateWarehouse(@RequestBody @Valid WareHouseRequest wareHouseRequest, @PathVariable int wareHouseId)
+	public ResponseEntity<ResponseStructure<AddressResponse>> updateAddress(@RequestBody @Valid AddressRequest addressRequest, @PathVariable int addressId)
 	{
-		return wareHouseService.updateWarehouse(wareHouseRequest, wareHouseId);
+		return addressService.updateAddress(addressRequest, addressId);
 	}
 	
-	@GetMapping("/warehouses/{wareHouseId}")
+	@GetMapping("/addresses/{addressId}")
 	@Operation(description = "The endpoint is used to find the "
-			+ "Warehouse based on id in the database ", responses = {
-					@ApiResponse(responseCode = "201", description = "Warehouse found"),
+			+ "Address in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Address found"),
 					@ApiResponse(responseCode = "400", description = "Invalid input", 
 					content = {
 							@Content(schema = @Schema(oneOf = ErrorStructure.class))
 					})
 			})
-
-	public ResponseEntity<ResponseStructure<WareHouseResponse>> findWarehouse(@PathVariable int wareHouseId)
+	public ResponseEntity<ResponseStructure<AddressResponse>> findAddress(@PathVariable int addressId)
 	{
-		return wareHouseService.findWarehouse(wareHouseId);
+		return addressService.findAddress(addressId);
 	}
 }

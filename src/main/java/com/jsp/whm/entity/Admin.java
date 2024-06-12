@@ -1,9 +1,7 @@
 package com.jsp.whm.entity;
 
-import java.util.List;
 
 import com.jsp.whm.enums.AdminType;
-import com.jsp.whm.enums.Privilege;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,5 +1,6 @@
 package com.jsp.whm.enums;
 
+import java.util.Arrays;
 import java.util.List;
 
 public enum AdminType 
@@ -11,11 +12,10 @@ public enum AdminType
 			Privilege.DELETE_ADDRESS, Privilege.DELETE_ADMIN, Privilege.DELETE_STORAGE,
 			Privilege.DELETE_WAREHOUSE)),
 	ADMIN(List.of(Privilege.CREATE_STORAGE, Privilege.READ, Privilege.UPDATE_ADMIN, 
-			Privilege.UPDATE_STORAGE, Privilege.DELETE_STORAGE));
-	
-	
+			Privilege.UPDATE_STORAGE, Privilege.DELETE_STORAGE));	
+
 	private List<Privilege> privileges;
-	
+
 	AdminType(List<Privilege> privileges)
 	{
 		this.privileges = privileges;
@@ -26,8 +26,8 @@ public enum AdminType
 		return privileges;
 	}
 
-	
-	
-	
-	
+
+
+
+
 }
