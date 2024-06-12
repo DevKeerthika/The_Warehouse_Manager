@@ -12,7 +12,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.jsp.whm.exception.AdminNotFoundByEmailException;
+import com.jsp.whm.exception.AdminNotFoundByIdException;
 import com.jsp.whm.exception.SuperAdminAlreadyExistException;
+import com.jsp.whm.exception.WarehouseNotFoundByIdException;
 
 @RestControllerAdvice
 public class ApplicationHandler 
@@ -31,6 +34,24 @@ public class ApplicationHandler
 	public ResponseEntity<ErrorStructure<String>> handleSuperAdminAlreadyExistException(SuperAdminAlreadyExistException e)
 	{
 		return errorResponse(HttpStatus.FORBIDDEN, e.getMessage(), "Only one Super Admin Allowed");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleAdminNotFoundByEmailException(AdminNotFoundByEmailException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Admin not found by given email");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleAdminNotFoundByIdException(AdminNotFoundByIdException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Admin not found by given id");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleWarehouseNotFoundByIdException(WarehouseNotFoundByIdException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Warehouse not found by given id");
 	}
 	
 	@ExceptionHandler
