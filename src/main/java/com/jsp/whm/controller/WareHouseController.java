@@ -62,4 +62,19 @@ public class WareHouseController
 	{
 		return wareHouseService.updateWarehouse(wareHouseRequest, wareHouseId);
 	}
+	
+	@GetMapping("/warehouses/{wareHouseId}")
+	@Operation(description = "The endpoint is used to find the "
+			+ "Warehouse based on id in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Warehouse found"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+
+	public ResponseEntity<ResponseStructure<WareHouseResponse>> findWarehouse(@PathVariable int wareHouseId)
+	{
+		return wareHouseService.findWarehouse(wareHouseId);
+	}
 }
