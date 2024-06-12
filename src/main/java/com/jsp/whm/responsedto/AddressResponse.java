@@ -1,8 +1,5 @@
 package com.jsp.whm.responsedto;
 
-
-import com.jsp.whm.enums.AdminType;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,10 +11,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AdminResponse 
+public class AddressResponse 
 {
-	private int adminId;
-	private String name;
-	private String email;
-	private AdminType adminType;
+	private int addressId;
+	private String addressLine;
+	private String city;
+	private String state;
+	private String country;
+	private String pincode;
+	private String longitude;
+	private String latitude;
+
 }
