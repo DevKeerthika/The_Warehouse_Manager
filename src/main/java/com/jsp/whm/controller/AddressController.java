@@ -3,6 +3,7 @@ package com.jsp.whm.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -58,5 +59,19 @@ public class AddressController
 	public ResponseEntity<ResponseStructure<AddressResponse>> updateAddress(@RequestBody @Valid AddressRequest addressRequest, @PathVariable int addressId)
 	{
 		return addressService.updateAddress(addressRequest, addressId);
+	}
+	
+	@GetMapping("/addresses/{addressId}")
+	@Operation(description = "The endpoint is used to find the "
+			+ "Address in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Address found"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+	public ResponseEntity<ResponseStructure<AddressResponse>> findAddress(@PathVariable int addressId)
+	{
+		return addressService.findAddress(addressId);
 	}
 }

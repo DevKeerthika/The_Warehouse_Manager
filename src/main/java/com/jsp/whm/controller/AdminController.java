@@ -118,7 +118,6 @@ public class AdminController
 							@Content(schema = @Schema(oneOf = ErrorStructure.class))
 					})
 			})
-
 	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAdmins()
 	{
 		return adminService.findAdmins();
