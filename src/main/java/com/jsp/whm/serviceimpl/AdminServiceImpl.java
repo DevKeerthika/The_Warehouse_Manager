@@ -29,7 +29,7 @@ public class AdminServiceImpl implements AdminService
 
 	@Autowired
 	private AdminRepository adminRepository;
-	
+
 	@Autowired
 	private WareHouseRepository wareHouseRepository;
 
@@ -64,14 +64,14 @@ public class AdminServiceImpl implements AdminService
 	{
 		WareHouse wareHouse = wareHouseRepository.findById(wareHouseId)
 				.orElseThrow(() -> new WarehouseNotFoundByIdException("Warehouse not found with the requested wareHouseId"));
-		
+
 		Admin admin = adminMapper.mapToAdmin(adminRequest, new Admin());
 		admin.setAdminType(AdminType.ADMIN);
 		admin = adminRepository.save(admin);
-		
+
 		wareHouse.setAdmin(admin);
 		wareHouseRepository.save(wareHouse);
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new ResponseStructure<AdminResponse>()
 						.setStatus(HttpStatus.CREATED.value())
@@ -84,20 +84,20 @@ public class AdminServiceImpl implements AdminService
 	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(AdminRequest adminRequest) 
 	{
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		
+
 		return adminRepository.findByEmail(email).map(admin -> {
-			
+
 			admin = adminMapper.mapToAdmin(adminRequest, admin);
 			admin = adminRepository.save(admin);
-			
+
 			return ResponseEntity
 					.status(HttpStatus.OK)
 					.body(new ResponseStructure<AdminResponse>()
 							.setStatus(HttpStatus.OK.value())
 							.setMessage("Admin updated")
 							.setData(adminMapper.mapToAdminResponse(admin)));
-			
-			
+
+
 		}).orElseThrow(() -> new AdminNotFoundByEmailException("Admin not found for the requested email"));
 	}
 
@@ -109,7 +109,7 @@ public class AdminServiceImpl implements AdminService
 		return adminRepository.findById(adminId).map(admin -> {
 			admin = adminMapper.mapToAdmin(adminRequest, admin);
 			admin = adminRepository.save(admin);
-			
+
 			return ResponseEntity
 					.status(HttpStatus.OK)
 					.body(new ResponseStructure<AdminResponse>()
@@ -117,6 +117,19 @@ public class AdminServiceImpl implements AdminService
 							.setMessage("Admin updated by SuperAdmin")
 							.setData(adminMapper.mapToAdminResponse(admin)));
 		}).orElseThrow(() -> new AdminNotFoundByIdException("Admin is not found for requested adminId"));
+	}
+
+
+	@Override
+	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(int adminId) 
+	{
+		return adminRepository.findById(adminId).map(admin -> ResponseEntity
+				.status(HttpStatus.FOUND)
+				.body(new ResponseStructure<AdminResponse>()
+						.setStatus(HttpStatus.FOUND.value())
+						.setMessage("Admin found")
+						.setData(adminMapper.mapToAdminResponse(admin)))
+				).orElseThrow(() -> new AdminNotFoundByIdException("Failed to find the Admin based on the given id"));
 	}
 
 
