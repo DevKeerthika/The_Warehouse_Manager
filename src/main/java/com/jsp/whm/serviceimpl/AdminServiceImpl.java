@@ -1,6 +1,8 @@
 package com.jsp.whm.serviceimpl;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -130,6 +132,27 @@ public class AdminServiceImpl implements AdminService
 						.setMessage("Admin found")
 						.setData(adminMapper.mapToAdminResponse(admin)))
 				).orElseThrow(() -> new AdminNotFoundByIdException("Failed to find the Admin based on the given id"));
+	}
+
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAdmins() 
+	{
+		List<AdminResponse> adminResponses = adminRepository.findAll().stream()
+				.filter(admin -> admin.getAdminType() != AdminType.SUPER_ADMIN)
+				.map(admin -> adminMapper
+				.mapToAdminResponse(admin))
+				.toList();
+		
+		if(adminResponses.isEmpty())
+			throw new AdminNotFoundByIdException("Failed to fetch admins");
+		
+		return ResponseEntity.status(HttpStatus.FOUND)
+				.body(new ResponseStructure<List<AdminResponse>>()
+						.setStatus(HttpStatus.FOUND.value())
+						.setMessage("Admins found")
+						.setData(adminResponses));
+		
 	}
 
 
