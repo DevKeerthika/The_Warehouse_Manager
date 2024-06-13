@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,5 +43,20 @@ public class StorageController
 	public ResponseEntity<ResponseStructure<List<StorageResponse>>> addStorage(@PathVariable int wareHouseId, @RequestBody @Valid StorageRequest storageRequest, @RequestParam("no_of_storage_units") int noOfStorageUnits)
 	{
 		return storageService.addStorage(wareHouseId, storageRequest, noOfStorageUnits);
+	}
+	
+	
+	@PutMapping("/storages/{storageId}")
+	@Operation(description = "The endpoint is used to update the "
+			+ "Storage in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Storage updated"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+	public ResponseEntity<ResponseStructure<StorageResponse>> updateStorage(@PathVariable int storageId, @RequestBody StorageRequest storageRequest)
+	{
+		return storageService.updateStorage(storageId,storageRequest);
 	}
 }
