@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.jsp.whm.exception.AddressNotFoundByIdException;
 import com.jsp.whm.exception.AdminNotFoundByEmailException;
 import com.jsp.whm.exception.AdminNotFoundByIdException;
+import com.jsp.whm.exception.StorageNotFoundByIdException;
 import com.jsp.whm.exception.SuperAdminAlreadyExistException;
 import com.jsp.whm.exception.WarehouseNotFoundByIdException;
 
@@ -59,6 +60,12 @@ public class ApplicationHandler
 	public ResponseEntity<ErrorStructure<String>> handleAddressNotFoundByIdException(AddressNotFoundByIdException e)
 	{
 		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Address not found by given id");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleStorageNotFoundByIdException(StorageNotFoundByIdException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Storage not found by given id");
 	}
 	
 

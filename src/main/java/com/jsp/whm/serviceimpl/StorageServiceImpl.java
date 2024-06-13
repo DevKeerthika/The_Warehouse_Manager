@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.jsp.whm.entity.Storage;
 import com.jsp.whm.entity.WareHouse;
+import com.jsp.whm.exception.StorageNotFoundByIdException;
 import com.jsp.whm.exception.WarehouseNotFoundByIdException;
 import com.jsp.whm.mapper.StorageMapper;
 import com.jsp.whm.repository.StorageRepository;
@@ -46,13 +47,13 @@ public class StorageServiceImpl implements StorageService
 		while(noOfStorageUnits>0)
 		{
 			Storage storage = storageMapper.mapToStorage(storageRequest, new Storage());
-	        storage.setWareHouse(wareHouse); 
-	        storages.add(storage);
-	        noOfStorageUnits--;
+			storage.setWareHouse(wareHouse); 
+			storages.add(storage);
+			noOfStorageUnits--;
 		}
-		
+
 		storages = storageRepository.saveAll(storages);
-		
+
 		double totalCapacityInKg = wareHouse.getTotalCapacityInKg();
 
 		wareHouse.setTotalCapacityInKg(storageRequest.getCapacityInKg()*noOfStorageUnits+totalCapacityInKg);
@@ -68,6 +69,23 @@ public class StorageServiceImpl implements StorageService
 						.setData(storages.stream()
 								.map(storage -> storageMapper.mapToStorageResponse(storage))
 								.collect(Collectors.toList())));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<StorageResponse>> updateStorage(int storageId,
+			StorageRequest storageRequest) 
+	{
+		return storageRepository.findById(storageId).map(storage -> {
+			storage = storageMapper.mapToStorage(storageRequest, storage);
+			storage = storageRepository.save(storage);
+			
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(new ResponseStructure<StorageResponse>()
+							.setStatus(HttpStatus.OK.value())
+							.setMessage("Storage updated")
+							.setData(storageMapper.mapToStorageResponse(storage)));
+		}).orElseThrow(() -> new StorageNotFoundByIdException("Failed to find the storage based on id"));
 	}
 
 }
