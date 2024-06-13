@@ -1,5 +1,7 @@
 package com.jsp.whm.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.jsp.whm.requestdto.WareHouseRequest;
@@ -15,5 +17,7 @@ public interface WareHouseService
 			int wareHouseId);
 
 	ResponseEntity<ResponseStructure<WareHouseResponse>> findWarehouse(int wareHouseId);
+
+	ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWarehouses();
 
 }
