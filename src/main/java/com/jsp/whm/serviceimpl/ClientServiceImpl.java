@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jsp.whm.entity.Client;
+import com.jsp.whm.exception.ClientNotFoundByIdException;
 import com.jsp.whm.mapper.ClientMapper;
 import com.jsp.whm.repository.ClientRepository;
 import com.jsp.whm.requestdto.ClientRequest;
@@ -23,7 +24,7 @@ public class ClientServiceImpl implements ClientService
 {
 	@Autowired
 	private ClientRepository clientRepository;
-	
+
 	@Autowired
 	private ClientMapper clientMapper;
 
@@ -34,13 +35,30 @@ public class ClientServiceImpl implements ClientService
 		String apiKey = UUID.randomUUID().toString();
 		client.setApiKey(apiKey);
 		clientRepository.save(client);
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new ResponseStructure<ApiKeyResponse>()
 						.setStatus(HttpStatus.CREATED.value())
 						.setMessage("Client created")
 						.setData(clientMapper.mapToApiKeyResponse(client)));
+
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<ClientResponse>> updateClient(@Valid ClientRequest clientRequest,
+			int clientId) 
+	{
+		Client client = clientRepository.findById(clientId)
+				.orElseThrow(() -> new ClientNotFoundByIdException("Failed to fetch client based on id"));
 		
+		client = clientMapper.mapToClient(clientRequest, client);
+		clientRepository.save(client);
+		
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponseStructure<ClientResponse>()
+						.setStatus(HttpStatus.OK.value())
+						.setMessage("Client updated")
+						.setData(clientMapper.mapToClientResponse(client)));
 	}
 
 }
