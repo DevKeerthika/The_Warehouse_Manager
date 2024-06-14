@@ -43,6 +43,7 @@ public class StorageServiceImpl implements StorageService
 				.orElseThrow(() -> new WarehouseNotFoundByIdException("Warehouse not found with the requested wareHouseId"));
 
 		List<Storage> storages = new ArrayList<Storage>();
+		int initialNoOfStorageUnits = noOfStorageUnits;
 
 		while(noOfStorageUnits>0)
 		{
@@ -56,7 +57,7 @@ public class StorageServiceImpl implements StorageService
 
 		double totalCapacityInKg = wareHouse.getTotalCapacityInKg();
 
-		wareHouse.setTotalCapacityInKg(storageRequest.getCapacityInKg()*noOfStorageUnits+totalCapacityInKg);
+		wareHouse.setTotalCapacityInKg(storageRequest.getCapacityInKg()*initialNoOfStorageUnits+totalCapacityInKg);
 
 		wareHouse.setStorages(storages);
 		wareHouseRepository.save(wareHouse);
