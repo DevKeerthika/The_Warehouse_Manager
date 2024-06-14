@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.jsp.whm.exception.AddressNotFoundByCityException;
 import com.jsp.whm.exception.AddressNotFoundByIdException;
 import com.jsp.whm.exception.AdminNotFoundByEmailException;
 import com.jsp.whm.exception.AdminNotFoundByIdException;
@@ -66,6 +67,12 @@ public class ApplicationHandler
 	public ResponseEntity<ErrorStructure<String>> handleStorageNotFoundByIdException(StorageNotFoundByIdException e)
 	{
 		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Storage not found by given id");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleAddressNotFoundByCityException(AddressNotFoundByCityException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Address not found by given city");
 	}
 	
 

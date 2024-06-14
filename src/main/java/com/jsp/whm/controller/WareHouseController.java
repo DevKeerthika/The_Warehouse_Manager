@@ -94,4 +94,19 @@ public class WareHouseController
 	{
 		return wareHouseService.findWarehouses();
 	}
+	
+	
+	@GetMapping("/cities/{city}/warehouses")
+	@Operation(description = "The endpoint is used to find all the "
+			+ "Warehouses based on city in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Warehouses found"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+	public ResponseEntity<ResponseStructure<List<WareHouseResponse>>> findWarehousesByCity(@PathVariable String city)
+	{
+		return wareHouseService.findWarehousesByCity(city);
+	}
 }
