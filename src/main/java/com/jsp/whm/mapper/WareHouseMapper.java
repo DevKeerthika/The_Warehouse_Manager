@@ -19,7 +19,6 @@ public class WareHouseMapper
 	public WareHouse mapToWareHouse(WareHouseRequest wareHouseRequest, WareHouse wareHouse)
 	{
 		wareHouse.setName(wareHouseRequest.getName());
-		wareHouse.setTotalCapacityInKg(0);
 		return wareHouse;
 	}
 

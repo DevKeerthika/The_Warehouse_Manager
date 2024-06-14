@@ -1,8 +1,6 @@
 package com.jsp.whm.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +38,7 @@ public class WareHouseServiceImpl implements WareHouseService
 	public ResponseEntity<ResponseStructure<WareHouseResponse>> createWareHouse(WareHouseRequest wareHouseRequest) 
 	{
 		WareHouse wareHouse = wareHouseMapper.mapToWareHouse(wareHouseRequest, new WareHouse());
+		wareHouse.setTotalCapacityInKg(0);
 		wareHouseRepository.save(wareHouse);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
