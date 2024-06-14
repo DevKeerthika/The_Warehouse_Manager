@@ -13,5 +13,7 @@ public interface ClientService
 {
 
 	ResponseEntity<ResponseStructure<ApiKeyResponse>> registerClient(@Valid ClientRequest clientRequest);
+
+	ResponseEntity<ResponseStructure<ClientResponse>> updateClient(@Valid ClientRequest clientRequest, int clientId);
 	
 }
