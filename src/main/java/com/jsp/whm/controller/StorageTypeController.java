@@ -2,7 +2,9 @@ package com.jsp.whm.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,5 +41,20 @@ public class StorageTypeController
 	public ResponseEntity<ResponseStructure<StorageTypeResponse>> createStorageType(@RequestBody @Valid StorageTypeRequest storageTypeRequest)
 	{
 		return storageTypeService.createStorage(storageTypeRequest);
+	}
+	
+	
+	@PutMapping("/storagetypes/{storageTypeId}")
+	@Operation(description = "The endpoint is used to update the "
+			+ "StorageType in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "StorageType updated"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+	public ResponseEntity<ResponseStructure<StorageTypeResponse>> updateStorageType(@RequestBody @Valid StorageTypeRequest storageTypeRequest, @PathVariable int storageTypeId)
+	{
+		return storageTypeService.updateStorageType(storageTypeRequest, storageTypeId);
 	}
 }

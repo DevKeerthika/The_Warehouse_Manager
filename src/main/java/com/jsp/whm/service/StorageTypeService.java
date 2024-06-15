@@ -13,5 +13,8 @@ public interface StorageTypeService
 {
 
 	ResponseEntity<ResponseStructure<StorageTypeResponse>> createStorage(@Valid StorageTypeRequest storageTypeRequest);
+
+	ResponseEntity<ResponseStructure<StorageTypeResponse>> updateStorageType(
+			@Valid StorageTypeRequest storageTypeRequest, int storageTypeId);
 	
 }
