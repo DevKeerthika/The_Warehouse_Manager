@@ -39,7 +39,7 @@ public class ClientServiceImpl implements ClientService
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new ResponseStructure<ApiKeyResponse>()
 						.setStatus(HttpStatus.CREATED.value())
-						.setMessage("Client created")
+						.setMessage("Client created, store the apiKey in secure place and use it for subsequent requests")
 						.setData(clientMapper.mapToApiKeyResponse(client)));
 
 	}

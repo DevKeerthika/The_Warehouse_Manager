@@ -14,5 +14,4 @@ import lombok.Setter;
 public class ApiKeyResponse 
 {
 	private String apiKey;
-	private String message;
 }
