@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jsp.whm.repository.StorageRepository;
 import com.jsp.whm.requestdto.StorageRequest;
 import com.jsp.whm.responsedto.StorageResponse;
 import com.jsp.whm.service.StorageService;
@@ -30,6 +32,7 @@ public class StorageController
 {
 	@Autowired
 	private StorageService storageService;
+	
 	
 	@PostMapping("/warehouses/{wareHouseId}/storages")
 	@Operation(description = "The endpoint is used to create the "
@@ -58,5 +61,20 @@ public class StorageController
 	public ResponseEntity<ResponseStructure<StorageResponse>> updateStorage(@PathVariable int storageId, @RequestBody StorageRequest storageRequest)
 	{
 		return storageService.updateStorage(storageId,storageRequest);
+	}
+	
+	
+	@GetMapping("/storages/{capacityInKg}/{lengthInMeters}/{breadthInMeters}/{heightInMeters}")
+	@Operation(description = "The endpoint is used to find the "
+			+ "First Storage in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "First Storage found"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+	public ResponseEntity<ResponseStructure<StorageResponse>> findFirstStorage(@PathVariable double capacityInKg, @PathVariable double lengthInMeters, @PathVariable double breadthInMeters, @PathVariable double heightInMeters)
+	{
+		return storageService.findFirstStorage(capacityInKg,lengthInMeters,breadthInMeters,heightInMeters);
 	}
 }

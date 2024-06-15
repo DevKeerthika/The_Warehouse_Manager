@@ -18,4 +18,7 @@ public interface StorageService
 
 	ResponseEntity<ResponseStructure<StorageResponse>> updateStorage(int storageId, StorageRequest storageRequest);
 
+	ResponseEntity<ResponseStructure<StorageResponse>> findFirstStorage(double capacityInKg, double lengthInMeters,
+			double breadthInMeters, double heightInMeters);
+
 }

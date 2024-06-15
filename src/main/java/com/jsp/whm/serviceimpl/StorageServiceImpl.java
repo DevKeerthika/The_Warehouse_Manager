@@ -89,4 +89,17 @@ public class StorageServiceImpl implements StorageService
 		}).orElseThrow(() -> new StorageNotFoundByIdException("Failed to find the storage based on id"));
 	}
 
+	@Override
+	public ResponseEntity<ResponseStructure<StorageResponse>> findFirstStorage(double capacityInKg,
+			double lengthInMeters, double breadthInMeters, double heightInMeters) 
+	{
+		return storageRepository.findFirstByCapacityInKgAndLengthInMetersAndBreadthInMetersAndHeightInMeters(capacityInKg, lengthInMeters, breadthInMeters, heightInMeters)
+				.map(storage -> ResponseEntity.status(HttpStatus.FOUND)
+						.body(new ResponseStructure<StorageResponse>()
+								.setStatus(HttpStatus.FOUND.value())
+								.setMessage("Based on criteria first storage found")
+								.setData(storageMapper.mapToStorageResponse(storage)))
+						).orElseThrow(() -> new StorageNotFoundByIdException("Failed to fetch the first storage based on client requirement"));
+	}
+
 }
