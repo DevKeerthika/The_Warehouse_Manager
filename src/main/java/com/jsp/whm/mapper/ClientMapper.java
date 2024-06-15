@@ -31,8 +31,7 @@ public class ClientMapper
 	public ApiKeyResponse mapToApiKeyResponse(Client client)
 	{
 		return ApiKeyResponse.builder()
-				.apiKey(client.getApiKey())
-				.message("Created").build();
+				.apiKey(client.getApiKey()).build();
 	}
 	
 }
