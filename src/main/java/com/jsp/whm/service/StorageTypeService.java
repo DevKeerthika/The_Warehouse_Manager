@@ -1,5 +1,7 @@
 package com.jsp.whm.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.jsp.whm.requestdto.StorageTypeRequest;
@@ -16,5 +18,7 @@ public interface StorageTypeService
 
 	ResponseEntity<ResponseStructure<StorageTypeResponse>> updateStorageType(
 			@Valid StorageTypeRequest storageTypeRequest, int storageTypeId);
+
+	ResponseEntity<ResponseStructure<List<StorageTypeResponse>>> findAllStorageTypes();
 	
 }

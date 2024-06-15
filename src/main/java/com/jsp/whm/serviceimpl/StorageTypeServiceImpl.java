@@ -1,5 +1,7 @@
 package com.jsp.whm.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,7 @@ public class StorageTypeServiceImpl implements StorageTypeService
 						.setData(storageTypeMapper.mapToStorageTypeResponse(storageType)));
 	}
 
-	
+
 	@Override
 	public ResponseEntity<ResponseStructure<StorageTypeResponse>> updateStorageType(
 			@Valid StorageTypeRequest storageTypeRequest, int storageTypeId) 
@@ -51,15 +53,35 @@ public class StorageTypeServiceImpl implements StorageTypeService
 					storageType = storageTypeMapper.mapToStorageType(storageTypeRequest, storageType);
 					storageType.setUnitsAvailable(0);
 					storageType = storageTypeRepository.save(storageType);
-					
+
 					return ResponseEntity.status(HttpStatus.OK)
 							.body(new ResponseStructure<StorageTypeResponse>()
 									.setStatus(HttpStatus.OK.value())
 									.setMessage("StorageType updated")
 									.setData(storageTypeMapper.mapToStorageTypeResponse(storageType)));
 				}).orElseThrow(() -> new StorageTypeNotFoundByIdException("StorageType not found based on id"));
-				
+
 	}
-	
+
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<StorageTypeResponse>>> findAllStorageTypes() 
+	{
+		List<StorageTypeResponse>  storageTypeResponses = storageTypeRepository.findAll().stream()
+				.map(storageType -> storageTypeMapper.mapToStorageTypeResponse(storageType))
+				.toList();
+
+		if(storageTypeResponses.isEmpty())
+			throw new StorageTypeNotFoundByIdException("Failed to fetch all StorageTypes");
+
+
+		return ResponseEntity.status(HttpStatus.FOUND)
+				.body(new ResponseStructure<List<StorageTypeResponse>>()
+						.setStatus(HttpStatus.FOUND.value())
+						.setMessage("StorageTypes found")
+						.setData(storageTypeResponses));
+
+	}
+
 
 }
