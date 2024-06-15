@@ -1,7 +1,10 @@
 package com.jsp.whm.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,5 +59,20 @@ public class StorageTypeController
 	public ResponseEntity<ResponseStructure<StorageTypeResponse>> updateStorageType(@RequestBody @Valid StorageTypeRequest storageTypeRequest, @PathVariable int storageTypeId)
 	{
 		return storageTypeService.updateStorageType(storageTypeRequest, storageTypeId);
+	}
+	
+	
+	@GetMapping("/storagetypes")
+	@Operation(description = "The endpoint is used to find all "
+			+ "StorageTypes in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "StorageTypes found"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+	public ResponseEntity<ResponseStructure<List<StorageTypeResponse>>> findAllStorageTypes()
+	{
+		return storageTypeService.findAllStorageTypes();
 	}
 }
