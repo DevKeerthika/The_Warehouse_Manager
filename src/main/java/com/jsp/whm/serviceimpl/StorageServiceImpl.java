@@ -15,6 +15,7 @@ import com.jsp.whm.exception.StorageNotFoundByIdException;
 import com.jsp.whm.exception.WarehouseNotFoundByIdException;
 import com.jsp.whm.mapper.StorageMapper;
 import com.jsp.whm.repository.StorageRepository;
+import com.jsp.whm.repository.StorageTypeRepository;
 import com.jsp.whm.repository.WareHouseRepository;
 import com.jsp.whm.requestdto.StorageRequest;
 import com.jsp.whm.responsedto.StorageResponse;
@@ -31,12 +32,15 @@ public class StorageServiceImpl implements StorageService
 
 	@Autowired
 	private WareHouseRepository wareHouseRepository;
+	
+	@Autowired
+	private StorageTypeRepository storageTypeRepository;
 
 	@Autowired
 	private StorageMapper storageMapper;
 
 	@Override
-	public ResponseEntity<ResponseStructure<List<StorageResponse>>> addStorage(int wareHouseId,
+	public ResponseEntity<ResponseStructure<List<StorageResponse>>> addStorage(int wareHouseId, int storageTypeId
 			@Valid StorageRequest storageRequest, int noOfStorageUnits) 
 	{
 		WareHouse wareHouse = wareHouseRepository.findById(wareHouseId)

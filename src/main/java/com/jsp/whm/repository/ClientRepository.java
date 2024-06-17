@@ -6,5 +6,5 @@ import com.jsp.whm.entity.Client;
 
 public interface ClientRepository extends JpaRepository<Client, Integer>
 {
-
+	Client findByEmail(String email);
 }
