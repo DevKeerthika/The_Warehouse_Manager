@@ -30,14 +30,13 @@ public class Storage
 	private int storageId;
 	private String blockName;
 	private String sectionName;
-	private double lengthInMeters;
-	private double breadthInMeters;
-	private double heightInMeters;
-	private double capacityInKg;
 	private List<MaterialTypes> materialTypes;
 	private double maxAdditionalWeight;
 	private double availableArea;
 	
 	@ManyToOne
 	private WareHouse wareHouse;
+	
+	@ManyToOne
+	private StorageType storageType;
 }
