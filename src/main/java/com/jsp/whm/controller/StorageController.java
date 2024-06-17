@@ -34,7 +34,7 @@ public class StorageController
 	private StorageService storageService;
 	
 	
-	@PostMapping("/warehouses/{wareHouseId}/storages")
+	@PostMapping("/warehouses/{wareHouseId}/storageTypes/{storageTypeId}/storages")
 	@Operation(description = "The endpoint is used to create the "
 			+ "Storage in the database ", responses = {
 					@ApiResponse(responseCode = "201", description = "Storage created"),

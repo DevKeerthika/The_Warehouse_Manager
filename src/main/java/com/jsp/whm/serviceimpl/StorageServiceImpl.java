@@ -10,11 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jsp.whm.entity.Storage;
+import com.jsp.whm.entity.StorageType;
 import com.jsp.whm.entity.WareHouse;
 import com.jsp.whm.exception.StorageNotFoundByIdException;
+import com.jsp.whm.exception.StorageTypeNotFoundByIdException;
 import com.jsp.whm.exception.WarehouseNotFoundByIdException;
 import com.jsp.whm.mapper.StorageMapper;
 import com.jsp.whm.repository.StorageRepository;
+import com.jsp.whm.repository.StorageTypeRepository;
 import com.jsp.whm.repository.WareHouseRepository;
 import com.jsp.whm.requestdto.StorageRequest;
 import com.jsp.whm.responsedto.StorageResponse;
@@ -35,20 +38,32 @@ public class StorageServiceImpl implements StorageService
 	@Autowired
 	private StorageMapper storageMapper;
 
+	@Autowired
+	private StorageTypeRepository storageTypeRepository;
+
+
 	@Override
-	public ResponseEntity<ResponseStructure<List<StorageResponse>>> addStorage(int wareHouseId,
+	public ResponseEntity<ResponseStructure<List<StorageResponse>>> addStorage(int wareHouseId, int storageTypeId,
 			@Valid StorageRequest storageRequest, int noOfStorageUnits) 
 	{
 		WareHouse wareHouse = wareHouseRepository.findById(wareHouseId)
-				.orElseThrow(() -> new WarehouseNotFoundByIdException("Warehouse not found with the requested wareHouseId"));
+				.orElseThrow(() -> new WarehouseNotFoundByIdException("Failed to fetch Warehouse based on id"));
 
+		StorageType storageType =  storageTypeRepository.findById(storageTypeId)
+				.orElseThrow(() -> new StorageTypeNotFoundByIdException("Failed to fetch StorageType based on id"));
+		
 		List<Storage> storages = new ArrayList<Storage>();
 		int initialNoOfStorageUnits = noOfStorageUnits;
 
 		while(noOfStorageUnits>0)
 		{
 			Storage storage = storageMapper.mapToStorage(storageRequest, new Storage());
+			
 			storage.setWareHouse(wareHouse); 
+			storage.setStorageType(storageType);
+			storage.setMaxAdditionalWeight(storageType.getCapacityInKg());
+			storageType.setUnitsAvailable(storageType.getUnitsAvailable() + noOfStorageUnits);
+			
 			storages.add(storage);
 			noOfStorageUnits--;
 		}
@@ -57,10 +72,11 @@ public class StorageServiceImpl implements StorageService
 
 		double totalCapacityInKg = wareHouse.getTotalCapacityInKg();
 
-		wareHouse.setTotalCapacityInKg(storageRequest.getCapacityInKg()*initialNoOfStorageUnits+totalCapacityInKg);
+		wareHouse.setTotalCapacityInKg(storageType.getCapacityInKg()*initialNoOfStorageUnits+totalCapacityInKg);
 
 		wareHouse.setStorages(storages);
 		wareHouseRepository.save(wareHouse);
+		storageTypeRepository.save(storageType);
 
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
@@ -70,7 +86,9 @@ public class StorageServiceImpl implements StorageService
 						.setData(storages.stream()
 								.map(storage -> storageMapper.mapToStorageResponse(storage))
 								.collect(Collectors.toList())));
+
 	}
+
 
 	@Override
 	public ResponseEntity<ResponseStructure<StorageResponse>> updateStorage(int storageId,
@@ -79,7 +97,7 @@ public class StorageServiceImpl implements StorageService
 		return storageRepository.findById(storageId).map(storage -> {
 			storage = storageMapper.mapToStorage(storageRequest, storage);
 			storage = storageRepository.save(storage);
-			
+
 			return ResponseEntity
 					.status(HttpStatus.OK)
 					.body(new ResponseStructure<StorageResponse>()
@@ -101,5 +119,7 @@ public class StorageServiceImpl implements StorageService
 								.setData(storageMapper.mapToStorageResponse(storage)))
 						).orElseThrow(() -> new StorageNotFoundByIdException("Failed to fetch the first storage based on client requirement"));
 	}
+
+
 
 }
