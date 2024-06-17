@@ -34,7 +34,7 @@ public class StorageController
 	private StorageService storageService;
 	
 	
-	@PostMapping("/warehouses/{wareHouseId}/storages")
+	@PostMapping("/warehouses/{wareHouseId}/storageTypes/{storageTypeId}/storages")
 	@Operation(description = "The endpoint is used to create the "
 			+ "Storage in the database ", responses = {
 					@ApiResponse(responseCode = "201", description = "Storage created"),
@@ -43,9 +43,9 @@ public class StorageController
 							@Content(schema = @Schema(oneOf = ErrorStructure.class))
 					})
 			})
-	public ResponseEntity<ResponseStructure<List<StorageResponse>>> addStorage(@PathVariable int wareHouseId, @RequestBody @Valid StorageRequest storageRequest, @RequestParam("no_of_storage_units") int noOfStorageUnits)
+	public ResponseEntity<ResponseStructure<List<StorageResponse>>> addStorage(@PathVariable int wareHouseId, @PathVariable int storageTypeId, @RequestBody @Valid StorageRequest storageRequest, @RequestParam("no_of_storage_units") int noOfStorageUnits)
 	{
-		return storageService.addStorage(wareHouseId, storageRequest, noOfStorageUnits);
+		return storageService.addStorage(wareHouseId, storageTypeId, storageRequest, noOfStorageUnits);
 	}
 	
 	
