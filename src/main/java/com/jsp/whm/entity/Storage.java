@@ -33,6 +33,7 @@ public class Storage
 	private List<MaterialTypes> materialTypes;
 	private double maxAdditionalWeight;
 	private double availableArea;
+	private int sellerId;
 	
 	@ManyToOne
 	private WareHouse wareHouse;

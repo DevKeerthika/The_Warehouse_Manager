@@ -64,17 +64,17 @@ public class StorageController
 	}
 	
 	
-	@GetMapping("/storages/{capacityInKg}/{lengthInMeters}/{breadthInMeters}/{heightInMeters}")
-	@Operation(description = "The endpoint is used to find the "
-			+ "First Storage in the database ", responses = {
-					@ApiResponse(responseCode = "201", description = "First Storage found"),
-					@ApiResponse(responseCode = "400", description = "Invalid input", 
-					content = {
-							@Content(schema = @Schema(oneOf = ErrorStructure.class))
-					})
-			})
-	public ResponseEntity<ResponseStructure<StorageResponse>> findFirstStorage(@PathVariable double capacityInKg, @PathVariable double lengthInMeters, @PathVariable double breadthInMeters, @PathVariable double heightInMeters)
-	{
-		return storageService.findFirstStorage(capacityInKg,lengthInMeters,breadthInMeters,heightInMeters);
-	}
+//	@GetMapping("/storages/{capacityInKg}/{lengthInMeters}/{breadthInMeters}/{heightInMeters}")
+//	@Operation(description = "The endpoint is used to find the "
+//			+ "First Storage in the database ", responses = {
+//					@ApiResponse(responseCode = "201", description = "First Storage found"),
+//					@ApiResponse(responseCode = "400", description = "Invalid input", 
+//					content = {
+//							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+//					})
+//			})
+//	public ResponseEntity<ResponseStructure<StorageResponse>> findFirstStorage(@PathVariable double capacityInKg, @PathVariable double lengthInMeters, @PathVariable double breadthInMeters, @PathVariable double heightInMeters)
+//	{
+//		return storageService.findFirstStorage(capacityInKg,lengthInMeters,breadthInMeters,heightInMeters);
+//	}
 }

@@ -31,7 +31,7 @@ public class ClientController
 	private ClientService clientService;
 	
 	
-	@PostMapping("/clients")
+	@PostMapping("/client/register")
 	@Operation(description = "The endpoint is used to register the "
 			+ "Client in the database ", responses = {
 					@ApiResponse(responseCode = "201", description = "Client created"),
@@ -45,7 +45,7 @@ public class ClientController
 		return clientService.registerClient(clientRequest);
 	}
 	
-	@PutMapping("/clients/{clientId}")
+	@PutMapping("/client/clients/{clientId}")
 	@Operation(description = "The endpoint is used to update the "
 			+ "Client in the database ", responses = {
 					@ApiResponse(responseCode = "201", description = "Client updated"),

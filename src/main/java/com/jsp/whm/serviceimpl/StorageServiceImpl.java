@@ -35,6 +35,7 @@ public class StorageServiceImpl implements StorageService
 	@Autowired
 	private WareHouseRepository wareHouseRepository;
 
+
 	@Autowired
 	private StorageMapper storageMapper;
 
@@ -58,15 +59,18 @@ public class StorageServiceImpl implements StorageService
 		while(noOfStorageUnits>0)
 		{
 			Storage storage = storageMapper.mapToStorage(storageRequest, new Storage());
-			
+
 			storage.setWareHouse(wareHouse); 
 			storage.setStorageType(storageType);
+
 			storage.setMaxAdditionalWeight(storageType.getCapacityInKg());
-			storageType.setUnitsAvailable(storageType.getUnitsAvailable() + noOfStorageUnits);
-			
+			storage.setAvailableArea(storageType.getBreadthInMeters()*storageType.getHeightInMeters()*storageType.getLengthInMeters());
+
 			storages.add(storage);
 			noOfStorageUnits--;
 		}
+
+		storageType.setUnitsAvailable(storageType.getUnitsAvailable() + initialNoOfStorageUnits);
 
 		storages = storageRepository.saveAll(storages);
 
@@ -82,7 +86,7 @@ public class StorageServiceImpl implements StorageService
 				.status(HttpStatus.CREATED)
 				.body(new ResponseStructure<List<StorageResponse>>()
 						.setStatus(HttpStatus.CREATED.value())
-						.setMessage("Storagea created")
+						.setMessage("Storage created")
 						.setData(storages.stream()
 								.map(storage -> storageMapper.mapToStorageResponse(storage))
 								.collect(Collectors.toList())));
@@ -107,18 +111,20 @@ public class StorageServiceImpl implements StorageService
 		}).orElseThrow(() -> new StorageNotFoundByIdException("Failed to find the storage based on id"));
 	}
 
-	@Override
-	public ResponseEntity<ResponseStructure<StorageResponse>> findFirstStorage(double capacityInKg,
-			double lengthInMeters, double breadthInMeters, double heightInMeters) 
-	{
-		return storageRepository.findFirstByCapacityInKgAndLengthInMetersAndBreadthInMetersAndHeightInMeters(capacityInKg, lengthInMeters, breadthInMeters, heightInMeters)
-				.map(storage -> ResponseEntity.status(HttpStatus.FOUND)
-						.body(new ResponseStructure<StorageResponse>()
-								.setStatus(HttpStatus.FOUND.value())
-								.setMessage("Based on criteria first storage found")
-								.setData(storageMapper.mapToStorageResponse(storage)))
-						).orElseThrow(() -> new StorageNotFoundByIdException("Failed to fetch the first storage based on client requirement"));
-	}
+	//	@Override
+	//	public ResponseEntity<ResponseStructure<StorageResponse>> findFirstStorage(double capacityInKg,
+	//			double lengthInMeters, double breadthInMeters, double heightInMeters) 
+	//	{
+	//		return storageRepository.findFirstByCapacityInKgAndLengthInMetersAndBreadthInMetersAndHeightInMeters(capacityInKg, lengthInMeters, breadthInMeters, heightInMeters)
+	//				.map(storage -> ResponseEntity.status(HttpStatus.FOUND)
+	//						.body(new ResponseStructure<StorageResponse>()
+	//								.setStatus(HttpStatus.FOUND.value())
+	//								.setMessage("Based on criteria first storage found")
+	//								.setData(storageMapper.mapToStorageResponse(storage)))
+	//						).orElseThrow(() -> new StorageNotFoundByIdException("Failed to fetch the first storage based on client requirement"));
+	//	}
+
+
 
 
 

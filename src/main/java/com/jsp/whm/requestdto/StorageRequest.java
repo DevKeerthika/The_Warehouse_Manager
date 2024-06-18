@@ -29,5 +29,5 @@ public class StorageRequest
 	@NotNull(message = "materialTypes cannot be null")
 	@NotEmpty(message = "materialTypes cannot be empty")
 	private List<MaterialTypes> materialTypes;
-			
+				
 }
