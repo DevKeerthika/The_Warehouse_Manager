@@ -16,6 +16,7 @@ import com.jsp.whm.exception.AddressNotFoundByCityException;
 import com.jsp.whm.exception.AddressNotFoundByIdException;
 import com.jsp.whm.exception.AdminNotFoundByEmailException;
 import com.jsp.whm.exception.AdminNotFoundByIdException;
+import com.jsp.whm.exception.IllegalOperationException;
 import com.jsp.whm.exception.StorageNotFoundByIdException;
 import com.jsp.whm.exception.SuperAdminAlreadyExistException;
 import com.jsp.whm.exception.UsernameNotFoundException;
@@ -80,6 +81,12 @@ public class ApplicationHandler
 	public ResponseEntity<ErrorStructure<String>> handleUsernameNotFoundException(UsernameNotFoundException e)
 	{
 		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Username not found");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleIllegalOperationException(IllegalOperationException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Illegal operation");
 	}
 	
 

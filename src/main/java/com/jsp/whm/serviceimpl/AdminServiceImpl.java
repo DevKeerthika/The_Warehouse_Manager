@@ -138,21 +138,18 @@ public class AdminServiceImpl implements AdminService
 	@Override
 	public ResponseEntity<ResponseStructure<List<AdminResponse>>> findAdmins() 
 	{
-		List<AdminResponse> adminResponses = adminRepository.findAll().stream()
-				.filter(admin -> admin.getAdminType() != AdminType.SUPER_ADMIN)
-				.map(admin -> adminMapper
-				.mapToAdminResponse(admin))
+
+		List<AdminResponse> adminResponses = adminRepository.findAllByAdminType(AdminType.ADMIN)
+				.stream()
+				.map(adminMapper::mapToAdminResponse)
 				.toList();
-		
-		if(adminResponses.isEmpty())
-			throw new AdminNotFoundByIdException("Failed to fetch admins");
-		
+
 		return ResponseEntity.status(HttpStatus.FOUND)
 				.body(new ResponseStructure<List<AdminResponse>>()
 						.setStatus(HttpStatus.FOUND.value())
 						.setMessage("Admins found")
 						.setData(adminResponses));
-		
+
 	}
 
 
