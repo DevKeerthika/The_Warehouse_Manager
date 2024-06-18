@@ -52,7 +52,7 @@ public class StorageServiceImpl implements StorageService
 
 		StorageType storageType =  storageTypeRepository.findById(storageTypeId)
 				.orElseThrow(() -> new StorageTypeNotFoundByIdException("Failed to fetch StorageType based on id"));
-
+		
 		List<Storage> storages = new ArrayList<Storage>();
 		int initialNoOfStorageUnits = noOfStorageUnits;
 
@@ -123,6 +123,8 @@ public class StorageServiceImpl implements StorageService
 	//								.setData(storageMapper.mapToStorageResponse(storage)))
 	//						).orElseThrow(() -> new StorageNotFoundByIdException("Failed to fetch the first storage based on client requirement"));
 	//	}
+
+
 
 
 
