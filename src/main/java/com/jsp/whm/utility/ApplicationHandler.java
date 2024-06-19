@@ -17,6 +17,7 @@ import com.jsp.whm.exception.AddressNotFoundByIdException;
 import com.jsp.whm.exception.AdminNotFoundByEmailException;
 import com.jsp.whm.exception.AdminNotFoundByIdException;
 import com.jsp.whm.exception.IllegalOperationException;
+import com.jsp.whm.exception.InventoryNotFoundByIdException;
 import com.jsp.whm.exception.StorageNotFoundByIdException;
 import com.jsp.whm.exception.SuperAdminAlreadyExistException;
 import com.jsp.whm.exception.UsernameNotFoundException;
@@ -88,6 +89,13 @@ public class ApplicationHandler
 	{
 		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Illegal operation");
 	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleInventoryNotFoundByIdException(InventoryNotFoundByIdException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Inventory not found");
+	}
+
 	
 
 	
