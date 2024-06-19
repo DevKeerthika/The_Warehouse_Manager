@@ -1,5 +1,7 @@
 package com.jsp.whm.service;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import com.jsp.whm.requestdto.InventoryRequest;
@@ -14,5 +16,7 @@ public interface InventoryService
 	ResponseEntity<ResponseStructure<InventoryResponse>> createInventory(@Valid InventoryRequest inventoryRequest, int storageId, int clientId);
 
 	ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(int productId);
+
+	ResponseEntity<ResponseStructure<List<InventoryResponse>>> findAllInventories();
 
 }

@@ -1,6 +1,7 @@
 package com.jsp.whm.serviceimpl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,30 +50,30 @@ public class InventoryServiceImpl implements InventoryService
 
 		Client client = clientRepository.findById(clientId)
 				.orElseThrow(() -> new ClientNotFoundByIdException("Failed to fetch client for requested id"));
-		
+
 		Inventory inventory = inventoryMapper.mapToInventory(inventoryRequest, new Inventory());
-	
+
 		inventory.setClient(client);
-		
+
 		inventory.setRestockedAt(LocalDateTime.now());
-		
+
 		storage.getInventories().add(inventory);
-		
+
 		double wholeWeight = inventory.getWeightInKg()*inventory.getQuantity();
-		
+
 		double area = inventory.getBreadthInMeters()*inventory.getHeightInMeters()*inventory.getLengthInMeters();
-		
+
 		storage.setMaxAdditionalWeight(storage.getMaxAdditionalWeight()-wholeWeight);
-		
+
 		storage.setAvailableArea(storage.getAvailableArea()-area);
-		
+
 		storage.setSellerId(inventory.getSellerId());
-		
+
 		inventory = inventoryRepository.save(inventory);
-		
+
 		storageRepository.save(storage);
 		clientRepository.save(client);
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(new ResponseStructure<InventoryResponse>()
 						.setStatus(HttpStatus.CREATED.value())
@@ -92,5 +93,21 @@ public class InventoryServiceImpl implements InventoryService
 								.setData(inventoryMapper.mapToInventoryResponse(inventory)))
 						).orElseThrow(() -> new InventoryNotFoundByIdException("Failed to find Inventory based on given id"));
 	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<List<InventoryResponse>>> findAllInventories() 
+	{
+		List<InventoryResponse> inventoryResponses = inventoryRepository.findAll()
+				.stream()
+				.map(inventoryMapper::mapToInventoryResponse)
+				.toList();
+
+		return ResponseEntity.status(HttpStatus.FOUND)
+				.body(new ResponseStructure<List<InventoryResponse>>()
+						.setStatus(HttpStatus.FOUND.value())
+						.setMessage("Inventories found")
+						.setData(inventoryResponses));
+	}
+
 
 }

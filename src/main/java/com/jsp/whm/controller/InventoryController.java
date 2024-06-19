@@ -1,5 +1,7 @@
 package com.jsp.whm.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +58,21 @@ public class InventoryController
 	public ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(@PathVariable int productId)
 	{
 		return inventoryService.findInventory(productId);
+	}
+	
+	
+	@GetMapping("/inventories")
+	@Operation(description = "The endpoint is used to find all "
+			+ "Inventories in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Inventories found"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+	public ResponseEntity<ResponseStructure<List<InventoryResponse>>> findAllInventories()
+	{
+		return inventoryService.findAllInventories();
 	}
 	
 }
