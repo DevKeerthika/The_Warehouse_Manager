@@ -11,6 +11,7 @@ import com.jsp.whm.entity.Client;
 import com.jsp.whm.entity.Inventory;
 import com.jsp.whm.entity.Storage;
 import com.jsp.whm.exception.ClientNotFoundByIdException;
+import com.jsp.whm.exception.InventoryNotFoundByIdException;
 import com.jsp.whm.exception.StorageNotFoundByIdException;
 import com.jsp.whm.mapper.InventoryMapper;
 import com.jsp.whm.repository.ClientRepository;
@@ -77,6 +78,19 @@ public class InventoryServiceImpl implements InventoryService
 						.setStatus(HttpStatus.CREATED.value())
 						.setMessage("Inventory created")
 						.setData(inventoryMapper.mapToInventoryResponse(inventory)));
+	}
+
+	@Override
+	public ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(int productId) 
+	{
+		return inventoryRepository.findById(productId)
+				.map(inventory -> ResponseEntity
+						.status(HttpStatus.FOUND)
+						.body(new ResponseStructure<InventoryResponse>()
+								.setStatus(HttpStatus.FOUND.value())
+								.setMessage("Inventory found")
+								.setData(inventoryMapper.mapToInventoryResponse(inventory)))
+						).orElseThrow(() -> new InventoryNotFoundByIdException("Failed to find Inventory based on given id"));
 	}
 
 }

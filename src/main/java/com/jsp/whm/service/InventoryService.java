@@ -13,4 +13,6 @@ public interface InventoryService
 
 	ResponseEntity<ResponseStructure<InventoryResponse>> createInventory(@Valid InventoryRequest inventoryRequest, int storageId, int clientId);
 
+	ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(int productId);
+
 }
