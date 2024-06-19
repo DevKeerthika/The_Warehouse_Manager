@@ -1,13 +1,12 @@
 package com.jsp.whm.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.jsp.whm.enums.MaterialTypes;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,29 +19,30 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Storage 
+public class Inventory 
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int storageId;
-	private String blockName;
-	private String sectionName;
-	private List<MaterialTypes> materialTypes;
-	private double maxAdditionalWeight;
-	private double availableArea;
-	private int sellerId;
-	
-	@ManyToOne
-	private WareHouse wareHouse;
-	
-	@ManyToOne
-	private StorageType storageType;
-	
-	@ManyToMany(mappedBy = "storages")
-	private List<Inventory> inventories = new ArrayList<Inventory>();
+	private int productId;
+    private String productTitle;
+    private double lengthInMeters;
+    private double breadthInMeters;
+    private double heightInMeters;
+    private double weightInKg;
+    private double quantity;
+    private List<MaterialTypes> materialTypes;
+    private LocalDateTime restockedAt;
+    private int sellerId;
+    
+    @ManyToOne
+    private Client client;
+    
+    @ManyToMany
+    private List<Storage> storages = new ArrayList<Storage>();
+
 }
