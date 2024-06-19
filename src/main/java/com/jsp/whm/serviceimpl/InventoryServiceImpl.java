@@ -109,5 +109,26 @@ public class InventoryServiceImpl implements InventoryService
 						.setData(inventoryResponses));
 	}
 
+	@Override
+	public ResponseEntity<ResponseStructure<InventoryResponse>> updateInventory(
+			@Valid InventoryRequest inventoryRequest, int productId) 
+	{
+		return inventoryRepository.findById(productId).map(inventory -> {
+			inventory = inventoryMapper.mapToInventory(inventoryRequest, inventory);
+
+			if(inventoryRequest.getQuantity() != inventory.getQuantity())
+				inventory.setRestockedAt(LocalDateTime.now());
+
+			inventory.setQuantity(inventoryRequest.getQuantity());
+			inventory = inventoryRepository.save(inventory);
+
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponseStructure<InventoryResponse>()
+							.setStatus(HttpStatus.OK.value())
+							.setMessage("Inventory updated")
+							.setData(inventoryMapper.mapToInventoryResponse(inventory)));
+		}).orElseThrow(() -> new InventoryNotFoundByIdException("Failed to update the inventory based on id"));
+	}
+
 
 }

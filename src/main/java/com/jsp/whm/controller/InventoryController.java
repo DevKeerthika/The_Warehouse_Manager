@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,6 +74,21 @@ public class InventoryController
 	public ResponseEntity<ResponseStructure<List<InventoryResponse>>> findAllInventories()
 	{
 		return inventoryService.findAllInventories();
+	}
+	
+	
+	@PutMapping("/inventories/{productId}")
+	@Operation(description = "The endpoint is used to update the "
+			+ "Inventory in the database ", responses = {
+					@ApiResponse(responseCode = "201", description = "Inventory updated"),
+					@ApiResponse(responseCode = "400", description = "Invalid input", 
+					content = {
+							@Content(schema = @Schema(oneOf = ErrorStructure.class))
+					})
+			})
+	public ResponseEntity<ResponseStructure<InventoryResponse>> updateInventory(@RequestBody @Valid InventoryRequest inventoryRequest, @PathVariable int productId)
+	{
+		return inventoryService.updateInventory(inventoryRequest, productId);
 	}
 	
 }
