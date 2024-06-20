@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,13 +29,12 @@ public class Inventory
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int productId;
+	private int inventoryId;
     private String productTitle;
     private double lengthInMeters;
     private double breadthInMeters;
     private double heightInMeters;
     private double weightInKg;
-    private double quantity;
     private List<MaterialTypes> materialTypes;
     private LocalDateTime restockedAt;
     private int sellerId;
@@ -42,7 +42,8 @@ public class Inventory
     @ManyToOne
     private Client client;
     
-    @ManyToMany
-    private List<Storage> storages = new ArrayList<Storage>();
-
+    @OneToMany(mappedBy = "inventory")
+    private List<Stock> stocks = new ArrayList<Stock>();
+    
+   
 }
