@@ -35,9 +35,6 @@ public class InventoryRequest
 	@Positive(message = "weightInKg must be positive")
 	private double weightInKg;
 	
-	@NotNull(message = "quantity cannot be null")
-	@Positive(message = "quantity must be positive")
-	private double quantity;
 	
 	@NotNull(message = "materialTypes cannot be null")
 	@NotEmpty(message = "materialTypes cannot be empty")

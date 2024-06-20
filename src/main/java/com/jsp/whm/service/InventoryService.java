@@ -13,7 +13,7 @@ import jakarta.validation.Valid;
 public interface InventoryService 
 {
 
-	ResponseEntity<ResponseStructure<InventoryResponse>> createInventory(@Valid InventoryRequest inventoryRequest, int storageId, int clientId);
+	ResponseEntity<ResponseStructure<InventoryResponse>> createInventory(@Valid InventoryRequest inventoryRequest, int storageId, int clientId, int quantity);
 
 	ResponseEntity<ResponseStructure<InventoryResponse>> findInventory(int productId);
 
