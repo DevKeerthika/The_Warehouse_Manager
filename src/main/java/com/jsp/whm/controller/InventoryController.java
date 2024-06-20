@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jsp.whm.requestdto.InventoryRequest;
@@ -40,9 +41,9 @@ public class InventoryController
 							@Content(schema = @Schema(oneOf = ErrorStructure.class))
 					})
 			})
-	public ResponseEntity<ResponseStructure<InventoryResponse>> createInventory(@RequestBody @Valid InventoryRequest inventoryRequest, @PathVariable int storageId, @PathVariable int clientId)
+	public ResponseEntity<ResponseStructure<InventoryResponse>> createInventory(@RequestBody @Valid InventoryRequest inventoryRequest, @PathVariable int storageId, @PathVariable int clientId, @RequestParam("quantity") int quantity)
 	{
-		return inventoryService.createInventory(inventoryRequest, storageId, clientId);
+		return inventoryService.createInventory(inventoryRequest, storageId, clientId, quantity);
 	}
 	
 	

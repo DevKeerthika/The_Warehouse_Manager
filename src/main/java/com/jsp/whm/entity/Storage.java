@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,6 +44,8 @@ public class Storage
 	@ManyToOne
 	private StorageType storageType;
 	
-	@ManyToMany(mappedBy = "storages")
-	private List<Inventory> inventories = new ArrayList<Inventory>();
+	@OneToMany
+	private List<Stock> stocks = new ArrayList<Stock>();
+	
+	
 }
