@@ -1,5 +1,6 @@
 package com.jsp.whm.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class Inventory
     private double heightInMeters;
     private double weightInKg;
     private List<MaterialTypes> materialTypes;
-    private LocalDateTime restockedAt;
+    private LocalDate restockedAt;
     private int sellerId;
     
     @ManyToOne

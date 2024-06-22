@@ -1,5 +1,6 @@
 package com.jsp.whm.responsedto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class InventoryResponse
     private double heightInMeters;
     private double weightInKg;
     private List<MaterialTypes> materialTypes;
-    private LocalDateTime restockedAt;
+    private LocalDate restockedAt;
     private int sellerId;
     
     private List<StockResponse> stocks;
