@@ -12,7 +12,16 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.jsp.whm.exception.AddressNotFoundByCityException;
+import com.jsp.whm.exception.AddressNotFoundByIdException;
+import com.jsp.whm.exception.AdminNotFoundByEmailException;
+import com.jsp.whm.exception.AdminNotFoundByIdException;
+import com.jsp.whm.exception.IllegalOperationException;
+import com.jsp.whm.exception.InventoryNotFoundByIdException;
+import com.jsp.whm.exception.StorageNotFoundByIdException;
 import com.jsp.whm.exception.SuperAdminAlreadyExistException;
+import com.jsp.whm.exception.UsernameNotFoundException;
+import com.jsp.whm.exception.WarehouseNotFoundByIdException;
 
 @RestControllerAdvice
 public class ApplicationHandler 
@@ -32,6 +41,63 @@ public class ApplicationHandler
 	{
 		return errorResponse(HttpStatus.FORBIDDEN, e.getMessage(), "Only one Super Admin Allowed");
 	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleAdminNotFoundByEmailException(AdminNotFoundByEmailException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Admin not found by given email");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleAdminNotFoundByIdException(AdminNotFoundByIdException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Admin not found by given id");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleWarehouseNotFoundByIdException(WarehouseNotFoundByIdException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Warehouse not found by given id");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleAddressNotFoundByIdException(AddressNotFoundByIdException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Address not found by given id");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleStorageNotFoundByIdException(StorageNotFoundByIdException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Storage not found by given id");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleAddressNotFoundByCityException(AddressNotFoundByCityException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Address not found by given city");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleUsernameNotFoundException(UsernameNotFoundException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Username not found");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleIllegalOperationException(IllegalOperationException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Illegal operation");
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure<String>> handleInventoryNotFoundByIdException(InventoryNotFoundByIdException e)
+	{
+		return errorResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Inventory not found");
+	}
+
+	
+
 	
 	@ExceptionHandler
 	public ResponseEntity<ErrorStructure<Map<String, String>>> handleMethodArgumentNotValid(MethodArgumentNotValidException e)
@@ -54,3 +120,4 @@ public class ApplicationHandler
 						.setRootCause(allErrors));
 	}
 }
+	

@@ -1,8 +1,6 @@
 package com.jsp.whm.responsedto;
 
 
-import com.jsp.whm.enums.AdminType;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,10 +12,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AdminResponse 
+public class ClientResponse 
 {
-	private int adminId;
-	private String name;
+	private int clientId;
+	private String businessName;
 	private String email;
-	private AdminType adminType;
+	private String contactNumber;
+
 }
